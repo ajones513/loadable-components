@@ -1,4 +1,8 @@
-export const clearModuleCache = key => delete require.cache[key]
+export const clearModuleCache = key => {
+  const module = require.cache[key]
+  module.parent.children = module.parent.children.filter(item => item === module)
+  delete require.cache[key]
+}
 
 export const smartRequire = modulePath => {
   if (process.env.NODE_ENV !== 'production') {
